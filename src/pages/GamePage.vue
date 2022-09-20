@@ -1,14 +1,16 @@
 <template>
-  <div id="gamePage">
+  <div id="gamePage" class="game-page">
     <a-row align="space-between">
-      <a-button style="margin-bottom: 8px" @click="doBack"> 返回</a-button>
-      <a-button>块数：{{ clearBlockNum }} / {{ totalBlockNum }}</a-button>
+      <img class="icon-func" src="../assets/back.png" @click="doBack" />
+      <a-button class="icon-func score">
+        <span></span>
+        <span>{{ clearBlockNum }} / {{ totalBlockNum }}</span>
+      </a-button>
     </a-row>
     <!-- 胜利 -->
     <a-row align="center">
       <div v-if="gameStatus === 3" style="text-align: center">
         <h2>恭喜，你赢啦！🎉</h2>
-        <img alt="程序员鱼皮" src="../assets/kunkun.png" />
         <my-ad style="margin-top: 16px" />
       </div>
     </a-row>
@@ -30,7 +32,11 @@
             }"
             @click="() => doClickBlock(block)"
           >
-            {{ block.type }}
+            <img class="card-icon" :src="block.type" />
+            <div
+              v-if="!isHolyLight && block.lowerThanBlocks.length > 0"
+              class="mask"
+            ></div>
           </div>
         </div>
       </div>
@@ -46,18 +52,20 @@
           v-if="randomBlock.length > 0"
           :data-id="randomBlock[0].id"
           class="block"
+          :style="{ 'z-index': randomBlock.length + 1 }"
           @click="() => doClickBlock(randomBlock[0], index)"
         >
-          {{ randomBlock[0].type }}
+          <img class="card-icon" :src="randomBlock[0].type" />
         </div>
         <!-- 隐藏 -->
         <div
-          v-for="num in Math.max(randomBlock.length - 1, 0)"
+          v-for="(num, index) in Math.max(randomBlock.length - 1, 0)"
           :key="num"
-          class="block disabled"
+          :style="{ 'z-index': randomBlock.length - index }"
+          class="block disabled cover-card"
         >
           <span v-if="canSeeRandom">
-            {{ randomBlock[num].type }}
+            <img class="card-icon" :src="randomBlock[num].type" />
           </span>
         </div>
       </div>
@@ -65,7 +73,7 @@
     <!-- 槽位 -->
     <a-row v-if="slotAreaVal.length > 0" align="center" class="slot-board">
       <div v-for="(slotBlock, index) in slotAreaVal" :key="index" class="block">
-        {{ slotBlock?.type }}
+        <img class="card-icon" :src="slotBlock?.type" />
       </div>
     </a-row>
     <!-- 技能 -->
@@ -86,7 +94,6 @@
 import useGame from "../core/game";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import MyAd from "../components/MyAd.vue";
 
 const router = useRouter();
 
@@ -124,6 +131,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.game-page {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .level-board {
   position: relative;
 }
@@ -140,10 +153,20 @@ onMounted(() => {
   margin-top: 8px;
 }
 
+.random-area .block {
+  position: relative;
+}
+
 .slot-board {
-  border: 10px solid saddlebrown;
+  border: 10px solid #cafc05;
+  background-color: #cafc05;
   margin: 16px auto;
   width: fit-content;
+}
+
+.slot-board .block {
+  border: 1px solid black;
+  background-color: #cafc05;
 }
 
 .skill-board {
@@ -151,19 +174,54 @@ onMounted(() => {
 }
 
 .block {
-  font-size: 28px;
+  font-size: 0;
   width: 42px;
   height: 42px;
   line-height: 42px;
   border: 1px solid #eee;
-  background: white;
+  background: rgb(255, 255, 255);
   text-align: center;
   vertical-align: top;
   display: inline-block;
+  user-select: none;
 }
 
 .disabled {
-  background: grey;
+  background: rgba(0, 0, 0, 0.6);
   cursor: not-allowed;
+}
+
+.card-icon {
+  width: 100%;
+}
+
+.icon-func {
+  margin-bottom: 40px;
+  width: 130px;
+}
+
+.score {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 53px;
+  background: url("../assets/score.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.mask {
+  left: 0;
+  top: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  opacity: 0.2;
+}
+
+.cover-card {
+  /* transform: translateX(-50%); */
+  margin-left: -22px;
 }
 </style>
