@@ -41,8 +41,8 @@ interface GameConfigType {
   levelNum: number;
   // 随机区块数（数组长度代表随机区数量，值表示每个随机区生产多少块）
   randomBlocks: number[];
-  // 动物数组
-  animals: string[];
+  // icon数组
+  icons: string[];
   // 最上层块数（已废弃）
   // topBlockNum: 40,
   // 最下层块数最小值（已废弃）

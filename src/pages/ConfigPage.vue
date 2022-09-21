@@ -69,7 +69,7 @@ const { customConfig, setGameConfig, setCustomConfig, reset } =
 const initConfig = {
   randomAreaNum: 2,
   randomBlockNum: 8,
-  animalStr: defaultGameConfig.animals.join(""),
+  animalStr: defaultGameConfig.icons.join(""),
   ...customConfig,
 };
 const config = reactive<any>(initConfig);
@@ -83,7 +83,7 @@ const handleFinish = (values: any) => {
     values.randomBlockNum
   );
   if (values.animalStr) {
-    config.animals = Array.from(values.animalStr);
+    config.icons = Array.from(values.animalStr);
   }
   setGameConfig(config);
   setCustomConfig(config);

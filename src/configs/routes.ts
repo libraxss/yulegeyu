@@ -6,7 +6,8 @@ import ConfigPage from "../pages/ConfigPage.vue";
 export default [
   {
     path: "/",
-    component: IndexPage,
+    component: GamePage,
+    // component: IndexPage,
   },
   {
     path: "/game",

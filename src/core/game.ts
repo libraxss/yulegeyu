@@ -118,7 +118,7 @@ const useGame = () => {
     // 保存所有块的数组
     const animalBlocks: string[] = [];
     // 需要用到的动物数组
-    const needAnimals = gameConfig.animals.slice(0, gameConfig.typeNum);
+    const needAnimals = gameConfig.icons.slice(0, gameConfig.typeNum);
     // 依次把块塞到数组里
     for (let i = 0; i < totalBlockNum.value; i++) {
       animalBlocks.push(needAnimals[i % gameConfig.typeNum]);
@@ -243,6 +243,21 @@ const useGame = () => {
       currentPosSet.add(key);
       block.x = newPosX;
       block.y = newPosY;
+      console.log(
+        block.type,
+        " x: ",
+        newPosX,
+        " y:",
+        newPosY,
+        " minX: ",
+        minX,
+        " maxX: ",
+        maxX,
+        " minY: ",
+        minY,
+        " maxY: ",
+        maxY
+      );
       // 填充层级关系
       genLevelRelation(block);
     }

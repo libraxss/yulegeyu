@@ -2,7 +2,7 @@
   <div id="gamePage" class="game-page">
     <a-row align="space-between">
       <img class="icon-func" src="../assets/back.png" @click="doBack" />
-      <a-button class="icon-func score">
+      <a-button class="icon-func score" @click="isShowSkill = true">
         <span></span>
         <span>{{ clearBlockNum }} / {{ totalBlockNum }}</span>
       </a-button>
@@ -11,7 +11,6 @@
     <a-row align="center">
       <div v-if="gameStatus === 3" style="text-align: center">
         <h2>恭喜，你赢啦！🎉</h2>
-        <my-ad style="margin-top: 16px" />
       </div>
     </a-row>
     <!-- 分层选块 -->
@@ -77,7 +76,7 @@
       </div>
     </a-row>
     <!-- 技能 -->
-    <div class="skill-board">
+    <div class="skill-board" v-if="isShowSkill">
       <a-space>
         <a-button size="small" @click="doRevert">撤回</a-button>
         <a-button size="small" @click="doRemove">移出</a-button>
@@ -92,7 +91,7 @@
 
 <script setup lang="ts">
 import useGame from "../core/game";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -117,6 +116,8 @@ const {
   doHolyLight,
   doSeeRandom,
 } = useGame();
+
+const isShowSkill = ref<boolean>(false);
 
 /**
  * 回上一页
@@ -184,6 +185,7 @@ onMounted(() => {
   vertical-align: top;
   display: inline-block;
   user-select: none;
+  transition: all 0.3s linear;
 }
 
 .disabled {
@@ -217,7 +219,7 @@ onMounted(() => {
   height: 100%;
   width: 100%;
   background-color: black;
-  opacity: 0.2;
+  opacity: 0.6;
 }
 
 .cover-card {
